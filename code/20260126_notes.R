@@ -84,4 +84,17 @@ ggplot(data = sample_data) +
   aes(x = env_group, y = cells_per_ml) +
   geom_boxplot() +
   theme_classic()
+
+#load packages
+library(tidyverse)
+
+#load data
+sample_data <- read_csv("data/sample_data.csv")
+
+#summarize data
+sample_data %>%
+  summarize(mean_cells=mean(cells_per_ml),
+          max_cells=max(cells_per_ml),
+          min_cells=min(cells_per_ml))
+
   
