@@ -97,4 +97,26 @@ sample_data %>%
           max_cells=max(cells_per_ml),
           min_cells=min(cells_per_ml))
 
-  
+#Load Packages
+library(tidyverse)
+
+#Load Data
+sample_data <- read_csv(file = "data/sample_data.csv")
+
+#How Nitrogen Impacts The Microbial Cell Abundances
+ggplot(data = sample_data) +
+  aes(x = total_nitrogen, y = cells_per_ml, 
+      size = temperature, color = env_group) +
+  labs(x = "Total Nitrogen (mg/L)", y = "Cells per mL", 
+       title = "Nitrogen and Cell Abundance Relationship") +
+  geom_point() + 
+  geom_smooth(method = "lm", se = TRUE)
+
+#How Phosphorus Impacts The Microbial Cell Abundances
+ggplot(data = sample_data) +
+  aes(x = total_phosphorus, y = cells_per_ml, 
+      size = temperature, color = env_group) +
+  labs(x = "Total Phosphorus (mg/L)", y = "Cells per mL", 
+       title = "Phosphorus and Cell Abundance Relationship") +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE)
