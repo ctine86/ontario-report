@@ -86,5 +86,44 @@ taxon_long_df %>%
   theme(axis.text.x = element_text(angle = 90)) 
 ```
 
+# Joining The Data
 
+ We will combine taxonomy and environmental data together into one data-frame.
+
+```{r join-data}
+# Let's Check sample_id
+sample_data_df$sample_id
+taxon_clean_df$sample_id
+
+# Check Length
+length(sample_data$sample_id)
+length(taxon_clean_df$sample_id)
+
+# Fix The Sample Names
+taxon_clean_goodSep_df <-
+  taxon_clean_df %>%
+    # Rename sample_id Names For Merging 
+    mutate(sample_id = str_replace(sample_id, pattern = "Sep", replacement = "September"))
+
+# Sample Names Are Different!
+sample_and_taxon_df <-
+  inner_join(sample_data_df, taxon_clean_goodSep_df, by = "sample_id")
+
+#Intuition Check
+dim(sample_and_taxon_df)
+
+# Write The File
+write_csv(sample_and_taxon_df, file = "data/sample_and_taxon.csv")
+```
+
+#Plot Chloroflexi
+
+```{r plot-chloroflexi}
+ggplot(sample_and_taxon_df, 
+       aes (x = depth, y = Chloroflexi)) +
+  geom_point() +
+  labs(x = "Depth (meters)", y = "Chloroflexi (Relative Abundance)",
+       title = "Strong Association of Depth and Chloroflexi Abundance") +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2))
+```
 
